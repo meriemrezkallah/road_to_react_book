@@ -110,24 +110,29 @@ const App = () => {
       // const [isLoading, setIsLoading] = React.useState(false);
       // const [isError, setIsError] = React.useState(false);
 //memoization
- const handleFetchStories = React.useCallback(()=> {
+ const handleFetchStories = React.useCallback(async ()=> {
 
   if(!searchTerm) return;
         dispatchStories({ type: 'STORIES_FETCH_INIT'});
-        axios.get(url)
-        //.then(response => response.json())
-        .then(result =>
+        // axios.get(url)
+        // //.then(response => response.json())
+        // .then(result =>
+       
+
+          try 
           {
             //the old way 
            // setStories(result.data.stories);
-            // the new way
+            // the new way 
+            const result = await axios.get(url);
             dispatchStories({
               type: 'STORIES_FETCH_SUCCESS',
               payload: result.data.hits,
             });
 
             // setIsLoading(false);
-          }).catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE'}));
+          }//.catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE'}));
+          catch { dispatchStories({ type: 'STORIES_FETCH_FAILURE'})}
 
  },[url])
 
