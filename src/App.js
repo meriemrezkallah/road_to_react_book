@@ -159,8 +159,9 @@ const App = () => {
         setSearchTerm(event.target.value);
       };
 
-      const handleSearchSubmit = () => {
-        setUrl(`${API_ENDPOINT}${searchTerm}`)
+      const handleSearchSubmit = (event) => {
+        setUrl(`${API_ENDPOINT}${searchTerm}`);
+        event.preventDefault();
       };
       // const handleChange = (event) => {
       //   const data=event.target.value;
@@ -180,21 +181,13 @@ const App = () => {
           <h1> My Hacker Stories </h1>
 
          {/* <Search search={searchTerm} onSearch={handleChange} />*/}
-        
-         <InputWithLabel 
-         id="search" 
-         value={searchTerm}
-         onInputChange={handleSearchInput} >
-           <strong> Search :</strong>
+        {/* {adding search form component} */}
+        <SearchForm
+          searchTerm={searchTerm}
+          onSearchInput={handleSearchInput}
+          onSearchSubmit={handleSearchSubmit}
+          />
          
-         </InputWithLabel> 
-
-        <button
-         type="button"
-         disabled={!searchTerm}
-         onClick={handleSearchSubmit}
-         > Submit
-         </button>
          <br></br>
          {/* display error msadg */}
          {stories.isError && <p> Something is wrong ...</p>}
@@ -205,6 +198,29 @@ const App = () => {
        
     );
 };
+const SearchForm=({
+  searchTerm,
+  onSearchInput,
+  onSearchSubmit,
+}) => (
+  <form  onSubmit={onSearchSubmit}>
+<InputWithLabel 
+         id="search" 
+         value={searchTerm}
+         onInputChange={onSearchInput} >
+           <strong> Search :</strong>
+         
+         </InputWithLabel> 
+
+        <button
+         type="submit"
+         disabled={!searchTerm}
+         //onClick={handleSearchSubmit}
+         > Submit
+         </button>
+
+  </form>
+)
 
 const InputWithLabel = ({
   id,
